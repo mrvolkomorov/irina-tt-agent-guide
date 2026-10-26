@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Раздатка №5 — Агент проверки макета: инструкция и промпт | ИИ в дизайне</title>
+<style>
+:root{--ink:#1a2330;--muted:#5b6673;--line:#dfe4ea;--bg:#f7f8fa;--card:#fff;--accent:#5b2c8a;--accent2:#0f7b6c;--warn:#b8860b;--warnbg:#fff8e6;--free:#0f7b6c;--freebg:#e6f5f2;--new:#b03030;--pay:#8a6100}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+header{background:var(--accent);color:#fff;padding:32px 24px}
+header .wrap{max-width:1080px;margin:0 auto}
+header .badge{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600}
+header h1{font-size:29px;line-height:1.25;margin:14px 0 10px;font-weight:700}
+header p{font-size:16px;opacity:.92;max-width:780px}
+header .meta{font-size:14px;opacity:.8;margin-top:14px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+main{padding:32px 0 56px}
+section{margin-bottom:44px}
+h2{font-size:22px;margin-bottom:8px;font-weight:700}
+h2 + .lead{color:var(--muted);font-size:15px;margin-bottom:18px}
+h3{font-size:17px;margin:24px 0 10px;font-weight:650}
+h4{font-size:15.5px;margin:0 0 6px;color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px 22px;margin-bottom:16px}
+.alert{border-left:4px solid var(--warn);background:var(--warnbg);border-radius:0 8px 8px 0}
+.alert strong{color:#8a6100}
+.good{border-left:4px solid var(--accent2);background:var(--freebg);border-radius:0 8px 8px 0}
+.good strong{color:#0b5f53}
+.free-badge{display:inline-block;background:var(--freebg);color:var(--free);font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:4px;border:1px solid #bfe3dc;white-space:nowrap}
+.pay-badge{display:inline-block;background:#fdf3dd;color:var(--pay);font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:4px;border:1px solid #ecdcae;white-space:nowrap}
+.new-badge{display:inline-block;background:#fdecec;color:var(--new);font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:4px;border:1px solid #f3c9c9;white-space:nowrap}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:14.5px}
+th{background:#eef1f5;text-align:left;padding:12px 14px;font-weight:650;font-size:13px;color:#3d4753;border-bottom:2px solid var(--line)}
+td{padding:12px 14px;border-bottom:1px solid #eceff2;vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr.pick{background:#f4faf8}
+.mname{font-weight:650}
+.mid{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--muted);word-break:break-all;margin-top:2px}
+.price{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.tblwrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line);background:var(--card);border-collapse:separate}
+.tblwrap table{border:none}
+ul,ol{margin:10px 0 10px 22px}
+li{margin-bottom:7px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:16px 0}
+.mini{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:16px 18px}
+.mini p{font-size:14px;color:var(--muted)}
+.prompt{background:#f4f6f8;border:1px solid #e2e6eb;border-left:3px solid var(--accent);border-radius:0 7px 7px 0;padding:13px 16px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13.5px;color:#2b3442;margin:12px 0;white-space:pre-wrap;line-height:1.55}
+.prompt-lbl{font-size:13px;font-weight:650;color:var(--accent);margin:16px 0 4px}
+a{color:var(--accent)}
+.check li{list-style:none;position:relative;padding-left:28px;margin-bottom:9px}
+.check li:before{content:"\25A1";position:absolute;left:0;top:-1px;font-size:17px;color:var(--accent2);font-weight:700}
+.steps{counter-reset:s;list-style:none;margin:16px 0;padding:0}
+.steps li{counter-increment:s;position:relative;padding-left:44px;margin-bottom:14px}
+.steps li:before{content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center}
+footer{background:#1f2732;color:#9aa5b1;padding:26px 24px;font-size:13.5px}
+footer .wrap{max-width:1080px;margin:0 auto}
+footer a{color:#c9a6e8}
+@media(max-width:640px){header h1{font-size:23px}main{padding:24px 0 40px}th,td{padding:10px 11px;font-size:13.5px}.steps li{padding-left:38px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<span class="badge">Раздаточный материал №5</span>
+<h1>Агент проверки макета: инструкция и промпт</h1>
+<p>Инструкция, по которой агент сверяет готовый макет с техническими требованиями и ищет ошибки в тексте. Готовый системный промпт, порядок работы и разбор типовых сбоев.</p>
+<div class="meta">Справочный материал к занятию 2 «ТТ-контроль макетов + презентации за 15 минут» · 19 октября 2026 · дополнено 26 октября 2026</div>
+</div></header>
+<main><div class="wrap">
+
+<section>
+<h2>Главная мысль</h2>
+<p class="lead">Агент не заменяет дизайнера — он снимает рутину сверки. Вместо того чтобы открывать шесть параметров площадки по памяти, вы отдаёте файл с требованиями и получаете таблицу расхождений. Окончательное решение остаётся за человеком.</p>
+</section>
+
+<section>
+<h2>1. Порядок работы</h2>
+<ol class="steps">
+<li>Открыть в кабинете <strong>agent.minimax.io</strong> раздел плагинов и вкладку агентов.</li>
+<li>Создать агента, дать имя по назначению — например, «Проверка макета».</li>
+<li>Модель оставить на автоматическом выборе.</li>
+<li>Вставить системный промпт из раздела 2 и сохранить.</li>
+<li>Нажать «Chat with it» — откроется чат с уже настроенным агентом.</li>
+<li>Приложить два файла: требования в PDF и макет в JPG или PNG.</li>
+<li>В запросе назвать источники явно: что во вложении и что проверить.</li>
+</ol>
+
+<div class="card good">
+<strong>Роль в промпте дублировать не нужно.</strong> В заранее настроенном агенте она уже задана. В обычном чате без агента пришлось бы описывать роль, контекст, формат и ограничения заново в каждом диалоге — агент это упаковывает в сущность, которую не нужно пересобирать.
+</div>
+
+<p class="prompt-lbl">Запрос при проверке:</p>
+<div class="prompt">Технические требования — в файле PDF во вложении.
+Макет — изображение JPEG во вложении.
+Проверь макет на соответствие техническим требованиям
+и ошибки в тексте макета.</div>
+</section>
+
+<section>
+<h2>2. Готовый системный промпт</h2>
+<div class="prompt">Ты — технический дизайнер-контролёр макетов.
+
+Задача: проверять готовые макеты клиента на соответствие
+техническим требованиям площадки и находить ошибки в тексте макета.
+
+Порядок работы:
+1. Изучи приложенный файл с техническими требованиями целиком.
+2. Изучи приложенный макет.
+3. Составь таблицу расхождений по всем параметрам требований.
+4. Отдельно выпиши ошибки в тексте макета: опечатки, несоответствие
+   цен и размеров, отсутствующие элементы.
+5. Отдельно отметь то, чего проверить нельзя.
+
+Формат ответа — таблица:
+| Параметр | Требование | Факт по макету | OK / Несоответствие |
+Если есть несоответствие — что конкретно исправить.
+
+Ограничения:
+- Не выноси окончательный вердикт, пока не изучены все приложенные материалы.
+- Не додумывай требования, которых нет в файле: отсутствующий параметр
+  отмечать как «не проверяется по источнику».
+- Точные цвета, Pantone и субпиксельное качество не оценивать.
+- Каждое несоответствие ранжировать по критичности:
+  блокеры → правки → рекомендации.</div>
+
+<div class="card alert">
+<strong>Сохраните промпт.</strong> Он не привязан к MiniMax и работает в любой среде, где есть модель и вложения. Если кредиты закончатся или понадобится перенос агента в другую платформу — промпт уже готов, останется вставить его заново.
+</div>
+</section>
+
+<section>
+<h2>3. Что агент проверяет, а что нет</h2>
+<div class="tblwrap"><table>
+<thead><tr><th>Проверяет</th><th>Не проверяет</th></tr></thead>
+<tbody>
+<tr><td>Разрешение и формат файла</td><td>Точные цвета по Pantone</td></tr>
+<tr><td>Цветовая модель: RGB или CMYK</td><td>Актуальность самих требований площадки</td></tr>
+<tr><td>Отступы и вылеты</td><td>Соответствие брендбуку клиента</td></tr>
+<tr><td>Безопасная зона для сторис</td><td>Субпиксельное качество</td></tr>
+<tr><td>Орфография в тексте на макете</td><td>Максимальный размер файла по требованиям площадки</td></tr>
+<tr><td>Размер шрифтов — примерно</td><td>Смысловую ошибку в цене или составе</td></tr>
+</tbody></table></div>
+</section>
+
+<section>
+<h2>4. Разбор типовых сбоев</h2>
+<div class="tblwrap"><table>
+<thead><tr><th>Что произошло</th><th>Почему</th><th>Что сделать</th></tr></thead>
+<tbody>
+<tr><td>Несоответствий не найдено</td><td>Требования не приложены или описаны слишком общо</td><td>Приложить файл требований и перечислить параметры в самом запросе: разрешение, формат, цветовая модель, отступы, безопасная зона</td></tr>
+<tr><td>Проверка «прошла», а клиент вернул макет</td><td>Проверяли то, что агент умеет, а ошибка была в другом</td><td>Добавить в промпт список типовых ошибок: слишком мелкий шрифт, элементы вне безопасной зоны, RGB вместо CMYK для печати</td></tr>
+<tr><td>Ответ пришёл в общем виде, без таблицы</td><td>В запросе не указан формат</td><td>Попросить отдельно: «дай только несоответствия, ранжируй по критичности: блокеры → правки → рекомендации»</td></tr>
+<tr><td>Агент выдумал требования</td><td>Файл требований не прочитан или прочитан частично</td><td>Указать в промпте: отсутствующий параметр отмечать как «не проверяется по источнику»</td></tr>
+<tr><td>Время проверки не сократилось</td><td>Проверялось то, что и так известно</td><td>Отдавать агенту то, что забывают: вылеты, безопасную зону, формат файла. То, что вы знаете наизусть, проверять не нужно</td></tr>
+<tr><td>Макет с данными клиента ушёл в сервис</td><td>Файл приложен как есть</td><td>Заменить название клиента и контакты на плейсхолдеры [БРЕНД], [ТЕЛЕФОН] до загрузки</td></tr>
+</tbody></table></div>
+</section>
+
+<section>
+<h2>5. Чек-лист перед проверкой</h2>
+<div class="card">
+<ul class="check">
+<li>Файл требований от нужной площадки, а не «примерные требования»</li>
+<li>В макете заменены название клиента и контактные данные</li>
+<li>В запросе названы оба вложения и что именно проверять</li>
+<li>Указан формат ответа</li>
+<li>Есть список типовых ошибок, на которые смотрите в первую очередь</li>
+<li>Полученный список расхождений сверен с макетом глазами</li>
+</ul>
+</div>
+</section>
+
+</div></main>
+<footer><div class="wrap">
+Раздаточный материал №5 — справочный к занятию 2 «ТТ-контроль макетов + презентации за 15 минут» · 19 октября 2026 · дополнено 26 октября 2026<br>
+Источники: составлено по итогам занятий 2 и 3 программы «ИИ в дизайне: от хаоса к системе»<br>
+Проверка макета перед сдачей — в <a href="https://mrvolkomorov.github.io/irina-publish-checklist/" target="_blank">раздатке №3</a>
+</div></footer>
+</body></html>
